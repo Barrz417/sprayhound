@@ -126,7 +126,7 @@ class LdapConnection:
             results = [
                 Credential(
                     samaccountname=entry['attributes']['sAMAccountName'],
-                    bad_password_count=0 if 'badPwdCount' not in entry['attributes'] else int(entry['attributes']['badPwdCount']),
+                    bad_password_count=0 if ('badPwdCount' not in entry['attributes'] or entry['attributes']['badPwdCount'] == []) else int(entry['attributes']['badPwdCount']),
                     threshold=self.domain_threshold if entry['dn'] not in self.granular_threshold else self.granular_threshold[entry['dn']],
                     pso=True if 'msDS-ResultantPSO' in entry['attributes'] and isinstance(entry['attributes']['msDS-ResultantPSO'], str) and entry['attributes']['msDS-ResultantPSO'].upper().startswith('CN=') else False
                 ) for entry in res if isinstance(entry, dict) and 'attributes' in entry and entry['attributes']['sAMAccountName'][-1] != '$'
