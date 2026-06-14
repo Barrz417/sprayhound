@@ -5,11 +5,11 @@
 
 import sys
 import argparse
-import pkg_resources
+from importlib.metadata import version as get_version
 
 from sprayhound.utils.defines import *
 
-version = pkg_resources.require("sprayhound")[0].version
+version = get_version("sprayhound")
 
 
 def get_args():
